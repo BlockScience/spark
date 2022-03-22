@@ -33,9 +33,18 @@ RUN apt-get update && \
 COPY python/pyspark ${SPARK_HOME}/python/pyspark
 COPY python/lib ${SPARK_HOME}/python/lib
 
+WORKDIR /opt/spark/work-dir/ipfs
+ENV IPFS_PATH="/opt/spark/work-dir/ipfs/.ipfs"
+RUN apt install -y wget build-essential && \
+    wget https://dist.ipfs.io/go-ipfs/v0.10.0/go-ipfs_v0.10.0_linux-amd64.tar.gz && \
+    tar -xvzf go-ipfs_v0.10.0_linux-amd64.tar.gz && \
+    bash go-ipfs/install.sh && \
+    touch ipfs_id.json
+
 WORKDIR /opt/spark/work-dir
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
 
 # Specify the User that the actual main process will run as
-ARG spark_uid=185
+# ARG spark_uid=185
+ARG spark_uid=root
 USER ${spark_uid}
