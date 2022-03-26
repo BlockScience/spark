@@ -16,6 +16,11 @@
 # limitations under the License.
 #
 
+ipfs init --profile server
+ipfs daemon &
+sleep 30
+ipfs id > /opt/spark/work-dir/ipfs/ipfs_id.json
+
 # echo commands to the terminal output
 set -ex
 
